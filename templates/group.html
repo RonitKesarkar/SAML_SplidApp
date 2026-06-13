@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block  body %}
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Split It!</a>
+    <a href="/" type="button" class="btn btn-dark btn-sm mx-1">Back</a>
+  </div>
+</nav>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<div class="container my-3">
+    <h2>{{group.title}}</h2>
+    <a href="/add_expense/{{group.id}}" type="button" class="btn btn-dark btn-sm mx-1">Add a Expense</a>
+    <a href="/add_member/{{group.id}}" type="button" class="btn btn-dark btn-sm mx-1">Add a Member</a>
+    <a href="/suggested_payments/{{group.id}}" type="button" class="btn btn-dark btn-sm mx-1" style="float: right;">Suggested Payments</a>
+    <div class="container my-3">
+        <h2>Members</h2>
+        {% if members|length==0 %}
+        No Record
+        {% else %}
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">S.No</th>
+                <th scope="col">Name</th>
+                <th scope="col">Paid</th>
+                <th scope="col">Expense</th>
+                <th scope="col">Balance</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for member in members %}
+              <tr>
+                <th scope="row">{{loop.index}}</th>
+                <td>{{member.name}}</td>
+                <td>{{member.paid}}</td>
+                <td>{{member.expense}}</td>
+                <td>{{member.balance}}</td>
+                <td>
+                  <a href="/update_member/{{member.id}}" type="button" class="btn btn-dark btn-sm mx-1">Edit</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% endif %}
+        </div>
+    <div class="container my-3">
+        <h2>Expenses</h2>
+        {% if expenses|length==0 %}
+        No Record
+        {% else %}
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">S.No</th>
+                <th scope="col">Name</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Paid by</th>
+                <th scope="col">Paid for</th>
+                <th scope="col">Date</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for expense in expenses %}
+              <tr>
+                <th scope="row">{{loop.index}}</th>
+                <td>{{expense.name}}</td>
+                <td>{{expense.amt}}</td>
+                <td>{{paid_by[loop.index-1]}}</td>
+                <td>{{paid_for[loop.index-1]|join(', ')}}</td>
+                <td>{{expense.date.strftime('%Y-%m-%d %H:%M') if expense.date else ''}}</td>
+                {% if expense.name=="Settled up" %}
+                <td>Cannot be changed!</td>
+                {% else %}
+                <td>
+                  <a href="/change_expense/{{expense.id}}" type="button" class="btn btn-dark btn-sm mx-1">Edit</a>
+                  <a href="/delete_expense/{{expense.id}}" onclick="clicked(event)" type="button" class="btn btn-dark btn-sm mx-1">Delete</a>
+                </td>
+                {% endif %}
+              </tr>
+              {% endfor %}
+            </tbody>
+            </table>
+        {% endif %}
+        </div>
+</div>
+<hr>
+<script>
+  function clicked(e) {
+      if(!confirm('You want to delete this expense?')) {
+          e.preventDefault();
+      }
+  }
+</script>
+{% endblock  body %}

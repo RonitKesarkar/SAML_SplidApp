@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block  body %}
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Split It!</a>
+      <a href="/back_to_group/{{group.id}}" type="button" class="btn btn-dark btn-sm mx-1">Back</a>
+    </div>
+  </nav>
+<div class="container my-3">
+    {% if members|length!=0 %}
+    {% with messages = get_flashed_messages() %}
+     {% if messages %}
+      <ul>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+      </ul>
+     {% endif %}
+    {% endwith %}
+  <h2>Add a Expense to group: {{group.title}}</h2>
+  <form action="/add_expense/{{group.id}}" method="POST">
+    <div class="mb-3">
+      <label for="name" class="form-label">Expense Name</label>
+      <input type="text" class="form-control" name="name" id="name" required>
+      <label for="amt" class="form-label">Amount</label>
+      <input type="number" step="0.01" class="form-control" name="amt" id="amt" required>
+      <hr>
+      <label for="paid_by" class="form-label">Paid by</label>
+            <select id="paid_by" class="form-control" name="paid_by" required>
+                <option disabled selected value> -- select an option -- </option>
+                {% for member in members %}
+                <option value="{{member.name}}">{{member.name}}</option>
+                {% endfor %}
+            </select>
+        <hr>
+      <p><label for="paid_for" class="form-label">Paid for</label></p>
+      <input type="checkbox" onclick="toggle(this);" /> Check all?<br />
+        {% for member in members %}
+            <input type="checkbox" id="mem{{member.id}}" name="paid_for_members" value="{{member.id}}">
+            <label for="mem{{member.id}}">{{member.name}}</label><br>
+            {% endfor %}
+        <hr>
+    </div>
+  <button type="submit" class="btn btn-dark">Add</button>
+  </form>
+  {% else %}
+  <h2>There are no members in this group. Kindly add members to group {{group.title}}</h2>
+  {% endif %}
+</div>
+<script>
+  function toggle(source) {
+    var checkboxes = document.querySelectorAll('input[name="paid_for_members"]');
+    for (var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = source.checked;
+    }
+}
+</script>
+{% endblock  body %}

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block  body %}
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Split It!</a>
+  </div>
+</nav>
+<div class="container my-3">
+    <h2>Create a Group</h2>
+    <form action="/" method="POST">
+        <div style="width: 100%; overflow: hidden;" class="mb-3">
+            <div style="width: 600px; float: left;" class="mb-3">
+                <label for="title" class="form-label">Group Name</label>
+                <input type="text" class="form-control" name="title" id="title" required>
+            </div>
+            <div style="margin-left: 620px;" class="mb-3">
+                <label for="type" class="form-label">Type</label>
+                <select id="type" class="form-control" name="type">
+                    <option value="Home">Home</option>
+                    <option value="Trip">Trip</option>
+                    <option value="Couple">Couple</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-dark">Submit</button>
+        </div>
+    </form>
+</div>
+<hr>
+<div class="container my-3">
+    <h2>Groups</h2>
+    {% if allGroups|length==0 %}
+    No Record
+    {% else %}
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">Title</th>
+            <th scope="col">Type</th>
+            <th scope="col">Created Time</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for group in allGroups %}
+          <tr onclick="window.location='/enter_group/{{group.id}}';" style="cursor: pointer;">
+            <th scope="row">{{loop.index}}</th>
+            <td><strong>{{group.title}}</strong></td>
+            <td>{{group.type}}</td>
+            <td>{{group.date.strftime('%Y-%m-%d') if group.date else ''}}</td>
+            
+            <td onclick="event.stopPropagation();">
+              <a href="/change_name/{{group.id}}" type="button" class="btn btn-dark btn-sm mx-1">Edit Name</a>
+              <a href="/delete_group/{{group.id}}" onclick="return confirm('Are you sure you want to delete group: {{group.title}}')" type="button" class="btn btn-dark btn-sm mx-1">Delete</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endif %}
+    </div>
+{% endblock  body %}

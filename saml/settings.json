@@ -1,0 +1,29 @@
+{
+    "strict": true,
+    "debug": true,
+    "sp": {
+        "entityId": "http://localhost:5000/saml/metadata",
+        "assertionConsumerService": {
+            "url": "http://localhost:5000/saml/acs",
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+        },
+        "singleLogoutService": {
+            "url": "http://localhost:5000/saml/sls",
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+        },
+        "x509cert": "",
+        "privateKey": ""
+    },
+    "idp": {
+        "entityId": "urn:://auth0.com",
+        "singleSignOnService": {
+            "url": "https://://auth0.com/samlp/rXq1PEDsPmnWnxnAPC6Xo8MC0WMEdOAl",
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+        },
+        "singleLogoutService": {
+            "url": "https://://auth0.com/samlp/rXq1PEDsPmnWnxnAPC6Xo8MC0WMEdOAl/logout",
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+        },
+        "x509cert": ""
+    }
+}

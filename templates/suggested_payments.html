@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block  body %}
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Split It!</a>
+      <a href="/back_to_group/{{group.id}}" type="button" class="btn btn-dark btn-sm mx-1">Back</a>
+    </div>
+  </nav>
+<div class="container my-3">
+    <h2>Suggested payments for group: {{group.title}}</h2>
+    {% if payments|length==0 %}
+    Group is settled.
+    {% else %}
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Payments</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for payment in payments %}
+          <tr>
+            <td>{{payment[0]}}</td>
+            <td>
+               <a href="/save_payments/{{group.id}}/{{payment[1]}}/{{payment[2]}}/{{payment[3]}}" onclick="clicked(event)" type="button" class="btn btn-success btn-sm mx-1">Settle Up</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endif %}
+</div>
+<script>
+  function clicked(e) {
+      if(!confirm('Settle up this payment?')) {
+          e.preventDefault();
+      }
+  }
+</script>
+{% endblock  body %}

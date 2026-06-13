@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block  body %}
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Split It!</a>
+    <a href="/back_to_index" type="button" class="btn btn-dark btn-sm mx-1">Back</a>
+  </div>
+</nav>
+<div class="container my-3">
+  <h2>Change group name</h2>
+<form action="/change_name/{{group.id}}" method="POST">
+  <div class="mb-3">
+    <label for="title" class="form-label">Group name</label>
+    <input type="text" class="form-control" name="title" id="title" value="{{group.title}}" required>
+  </div>
+  <div class="mb-3">
+    <label for="type" class="form-label">Type</label>
+        <select id="type" class="form-control" name="type">
+            <option value="Home" {% if group.type == 'Home' %}selected{% endif %}>Home</option>
+            <option value="Trip" {% if group.type == 'Trip' %}selected{% endif %}>Trip</option>
+            <option value="Couple" {% if group.type == 'Couple' %}selected{% endif %}>Couple</option>
+            <option value="Other" {% if group.type == 'Other' %}selected{% endif %}>Other</option>
+        </select>
+  </div>
+  <button type="submit" class="btn btn-dark">Change</button>
+</form>
+</div>
+{% endblock  body %}
